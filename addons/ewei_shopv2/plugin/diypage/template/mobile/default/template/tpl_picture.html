@@ -1,0 +1,9 @@
+{if !empty($diyitem['data'])}
+    <div class="fui-picture" style="padding-bottom: {$diyitem['style']['paddingtop']}px; background: {if $diyitem['style']['bgd']==0 || !$diyitem['style']['bgd']}{$diyitem['style']['background']}{else}transparent{/if};">
+        {loop $diyitem['data'] $pictureitem}
+        <a href="{php echo empty($pictureitem['linkurl'])? 'javascript:;': $pictureitem['linkurl']}" style="display: block; padding: {$diyitem['style']['paddingtop']}px {$diyitem['style']['paddingleft']}px;" data-nocache="true">
+            <img class="wxpreview" src="{php echo tomedia($pictureitem['imgurl'])}"  />
+        </a>
+        {/loop}
+    </div>
+{/if}

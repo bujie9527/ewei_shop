@@ -1,0 +1,29 @@
+
+<div class='alert alert-primary' id="normal_alert">
+    会员转账余额时扣除的手续费 <br>
+    手续费由转出金额中扣除，例如设置了余额转账手续费为比例金额10%，会员A转账出余额100，将提醒会员A转账手续费10、实际到账90
+</div>
+<div class="form-group">
+    <label class="col-lg control-label">余额转账手续费</label>
+    <div class="col-sm-9 col-xs-12">
+        <label class="radio-inline"><input type="radio"  name="data[service_recharge_type]" value="1" class="service_type" {if $data['service_recharge_type'] ==1} checked="checked"{/if} /> 比例</label>
+        <label class="radio-inline"><input type="radio"  name="data[service_recharge_type]" value="0" class="service_type" {if $data['service_recharge_type'] ==0} checked="checked"{/if} /> 固定金额</label>
+    </div>
+</div>
+    <div class="form-group" id="service_price">
+        <label class="col-lg control-label">手续费</label>
+        <div class="col-sm-9 col-xs-12">
+            <div class='input-group fixsingle-input-group'>
+                <input type="text" name="data[service_recharge_price]"  value="{$data['service_recharge_price']}" class="form-control" />
+                <span class='input-group-addon' id="service_recharge_change" {if $data['service_recharge_type'] != 1} style="display:none"{/if}>%</span>
+            </div>
+        </div>
+    </div>
+<script>
+    $(document).on('change','.service_type',function ()
+    {
+        let checkVal = $(this).val();
+        let domSelector = $('#service_recharge_change');
+        checkVal == 1 ? domSelector.show() : domSelector.hide();
+    })
+</script>

@@ -1,0 +1,230 @@
+{template '_header'}
+<!--3.22优化弹窗-->
+<style>
+    .str {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 99999999;
+        font-family: inherit;
+        overflow: hidden;
+        transition-duration: 0.5s;
+        transition-timing-function: cubic-bezier(0.36, 1.1, 0.2, 1);
+        background-color: rgba(0, 0, 0, 0.2);
+        -webkit-transition: all .4s;
+        transition: all .4s;
+        overflow-y: auto;
+    }
+    .strModal {
+        width: 350px;
+        position: absolute;
+        top: 350px;
+        left: 50%;
+        margin-left: -175px;
+        background: #fff;
+        border-radius: 5px;
+        outline: none;
+        padding: 15px 15px 0;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        transition-duration: 0.5s;
+        transition-timing-function: cubic-bezier(0.36, 1.1, 0.2, 1.2);
+        opacity: 0;
+        -webkit-perspective: 500px;
+        perspective: 500px;
+        -webkit-perspective-origin: center;
+        perspective-origin: center;
+    }
+    .activeShow {
+        top: 392px;
+        opacity: 1;
+    }
+    .hilight {
+        -webkit-animation: hilight 0.82s cubic-bezier(0.36,0.07,0.19,0.97) both;
+        animation: hilight 0.82s cubic-bezier(0.36,0.07,0.19,0.97) both;
+        -webkit-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+    }
+    @-webkit-keyframes hilight {
+        10%,
+        90% {
+            -webkit-transform: translate3d(-2px, 0, 0);
+            transform: translate3d(-2px, 0, 0);
+        }
+        20%,
+        80% {
+            -webkit-transform: translate3d(4px, 0, 0);
+            transform: translate3d(4px, 0, 0);
+        }
+        30%,
+        50%,
+        70% {
+            -webkit-transform: translate3d(-8px, 0, 0);
+            transform: translate3d(-8px, 0, 0);
+        }
+        40%,
+        60% {
+            -webkit-transform: translate3d(8px, 0, 0);
+            transform: translate3d(8px, 0, 0);
+        }
+    }
+    @keyframes hilight {
+        10%,
+        90% {
+            -webkit-transform: translate3d(-2px, 0, 0);
+            transform: translate3d(-2px, 0, 0);
+        }
+        20%,
+        80% {
+            -webkit-transform: translate3d(4px, 0, 0);
+            transform: translate3d(4px, 0, 0);
+        }
+        30%,
+        50%,
+        70% {
+            -webkit-transform: translate3d(-8px, 0, 0);
+            transform: translate3d(-8px, 0, 0);
+        }
+        40%,
+        60% {
+            -webkit-transform: translate3d(8px, 0, 0);
+            transform: translate3d(8px, 0, 0);
+        }
+    }
+    .strTitle {
+        display: block;
+        font-size: 22px;
+        line-height: 20px;
+        padding-bottom: 15px;
+    }
+    .strModal .content {
+        height: 34px;
+        width: 100%;
+        margin-bottom: 15px;
+
+    }
+    .strModal .strBtn {
+        float: right;
+        padding-bottom: 15px;
+    }
+    .new_sub {
+        display: none;
+    }
+</style>
+<!--3.22优化弹窗结束-->
+<div class="page-header"> 当前位置：<span class="text-primary">地址库设置</span>  </div>
+
+<div class="page-content">
+    <form action="" method="post" class="form-horizontal form-validate" enctype="multipart/form-data" >
+
+
+        <div class="form-group">
+            <label class="col-lg control-label">地址库选择</label>
+            <div class="col-sm-9 col-xs-12">
+                {ifp 'sysset.area.edit'}
+                <label class="radio-inline">
+                    <input type="radio" name="data[new_area]" class="new_area" value="0" {if empty($data['new_area'])}checked{else}disabled{/if}  /> 旧版
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="data[new_area]" class="new_area" value="1" {if $data['new_area']==1}checked disabled{/if} /> 新版(数据更新并含街道信息)
+                </label>
+                <span class='help-block'>新版与旧版数据不兼容,开启后,用户地址库将被清空,并且不能再切换回旧版,请谨慎选择!</span>
+                {else}
+                <input type="hidden" name="data[new_area]" value="{$data['new_area']}" />
+                <div class='form-control-static'>{if empty($data['new_area'])}旧版{else}新版{/if}</div>
+                {/if}
+            </div>
+        </div>
+
+
+        <div class="form-group street-group" {if empty($data['new_area'])}style="display:none;"{/if}>
+        <label class="col-lg control-label">收货地址库开启街道</label>
+        <div class="col-sm-9 col-xs-12">
+            {ifp 'sysset.area.edit'}
+            <label class="radio-inline">
+                <input type="radio" name="data[address_street]" value="1" {if $data['address_street']==1}checked{/if} /> 是
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="data[address_street]" value="0" {if empty($data['address_street'])}checked{/if} /> 否
+            </label>
+            {else}
+            <input type="hidden" name="data[address_street]" value="{$data['address_street']}" />
+            <div class='form-control-static'>{if empty($data['address_street'])}关闭{else}开启{/if}</div>
+            {/if}
+        </div>
+</div>
+
+
+<div class="form-group"> </div>
+<div class="form-group">
+    <label class="col-lg control-label"></label>
+    <div class="col-sm-9 col-xs-12">
+        {ifp 'sysset.area.edit'}
+            <!--3.22优化-->
+            <button class="btn btn-primary new_sub" type="button">提交</button>
+            <input type="submit" value="提交" class="btn btn-primary old_sub"  />
+            <!--3.22优化结束-->
+        {/if}
+    </div>
+</div>
+<div class="str">
+    <div class="container">
+        <div class="row">
+            <div class="strModal">
+                <div class="strTitle">提示</div>
+                <div class="content">
+                    新版与旧版数据不兼容,开启后,用户地址库将被清空,并且不能再切换回旧版,请谨慎选择!
+                </div>
+                <div class="strBtn">
+                    <input type="submit" value="确定" class="btn btn-primary"  >
+                    <button type="button" class="btn btn-default">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</form>
+</div>
+
+<script language="javascript">
+    $(function () {
+        $('.new_area').click(function () {
+            var type = $(".new_area:checked").val();
+            if (type == '1') {
+                $('.new_sub').show();
+                $('.old_sub').hide();
+                $('.street-group').show();
+            }else {
+                $('.street-group').hide();
+            }
+        });
+        $('.new_sub').click(function () {
+            $('.str').fadeIn(300);
+            $('.str .strModal').addClass('activeShow');
+        });
+        // 点击确定
+        $('.strBtn .btn.btn-primary').click(function () {
+            // $('.street-group').show();
+            $('.str .strModal').removeClass('activeShow');
+            $('.str').fadeOut(300);
+        });
+        // 点击取消
+        $('.strBtn .btn.btn-default').click(function () {
+            $('.str .strModal').removeClass('activeShow');
+            $('.str').fadeOut(300);
+        });
+        $('.str').click(function () {
+            $('.strModal').addClass('hilight');
+            setTimeout(function () {
+                $('.strModal').removeClass('hilight');
+            },400)
+        });
+
+    })
+</script>
+
+{template '_footer'}
+

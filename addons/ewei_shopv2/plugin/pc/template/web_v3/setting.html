@@ -1,0 +1,199 @@
+{template '_header'}
+<style>
+    .qqkefu{
+        width: 165px;
+        float: left;
+        margin-right:10px;
+        margin-bottom:5px;
+    }
+</style>
+<div class="page-header">  当前位置：<span class="text-primary">设置</span></div>
+<div class="page-content">
+    <form id="setform"  action="" method="post" class="form-horizontal form-validate" >
+        <h2 style="font-size: large;margin-bottom: 20px"><em>基础设置</em></h2>
+        <div class="form-group">
+            <label class="col-lg control-label">直接链接</label>
+            <div class="col-sm-9 col-xs-12">
+                <p class='form-control-static'>
+                    <a href='javascript:;' class="js-clip" title='点击复制链接' data-url="{php echo $data['url']}" >{php echo $data['url']}</a>
+                        <span style="cursor: pointer;" data-toggle="popover" data-trigger="hover" data-html="true"
+                              data-content="<img src='{php echo m('qrcode')->createQrcode($data['url'])}' width='130' alt='链接二维码'>" data-placement="auto right">
+                            <i class="glyphicon glyphicon-qrcode"></i>
+                        </span>
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg control-label" >热门搜索</label>
+            <div class="col-sm-9 col-xs-12">
+                <input type='text' class='form-control' name='search' value="{$data['search']}" style="width: 50%;"/>
+                <span class='help-block'>多个请用逗号隔开</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg control-label">底部版权</label>
+            <div class="col-sm-9 col-xs-12">
+                <textarea style="height:100px; width: 50%;" name="copyright" class="form-control" cols="6">{$data['copyright']}</textarea>
+            </div>
+        </div>
+        <!-- 展示底部版权 -->
+        <div class="form-group">
+            <label class="col-lg control-label must">底部展示市场监管图标</label>
+            <div class="col-sm-9 col-xs-12">
+                <label class="radio-inline"><input type="radio"  name="advBanner" value="1" {if !empty($data['advBanner'])}checked="checked"{/if} /> 开启</label>
+                <label class="radio-inline"><input type="radio"  name="advBanner" value="0" {if empty($data['advBanner'])}checked="checked"{/if} /> 关闭</label>
+                <!--<textarea type="text" class="advBanner form-control valid" name="advBannerText" value="" placeholder="请将当地市场监管局要求的代码粘贴到框内" style="display: none;margin-top: 20px;height:100px; width: 50%;">{$data['advBannerText']}</textarea>-->
+                <textarea type="text" class="advBanner form-control valid" name="advBannerText" value="" placeholder="请输入链接" style="display: none;margin-top: 20px;height:80px; width: 50%;">{$data['advBannerText']}</textarea>
+            </div>
+        </div>
+        <!-- ending -->
+        <h2 style="font-size: large;margin-bottom: 20px"><em>客服设置</em></h2>
+        <div class="form-group" style="display: flex;">
+            <div style="width: 140px">
+                <label class="col-lg control-label">QQ客服</label>
+            </div>
+            <div id="QQkefu" style="flex-grow: 1;">
+                {if empty($data['qq'])}
+                <div class="col-sm-9 col-xs-12 addhtml">
+                    <input type="text" class="form-control qqkefu"  name="qq_nick[]" value="{$qq['nickname']}" placeholder="请在此输入客服昵称"/>
+                    <input type="text" class="form-control qqkefu"  name="qq_num[]" value="{$qq['qqnum']}" placeholder="请在此输入QQ号"/>
+                    <p><a href="javascript:;" onclick="addqq();" style="float: left;margin-left: 10px">新增</a></p>
+                    <p><a href="javascript:;" onclick="removeqq(this);" style="float: left;margin-left: 10px">删除</a></p>
+                </div>
+                {/if}
+                {loop $data['qq'] $k $qq}
+                <div class="col-sm-9 col-xs-12 addhtml">
+                    <input type="text" class="form-control qqkefu"  name="qq_nick[]" value="{$qq['nickname']}" placeholder="请在此输入客服昵称"/>
+                    <input type="text" class="form-control qqkefu"  name="qq_num[]" value="{$qq['qqnum']}" placeholder="请在此输入QQ号"/>
+                     <p><a href="javascript:;" onclick="addqq();" style="float: left;margin-left: 10px">新增</a></p>
+                     <p><a href="javascript:;" onclick="removeqq(this);" style="float: left;margin-left: 10px">删除</a></p>
+                </div>
+                {/loop}
+            </div>
+        </div>
+        <div class="form-group" style="display: flex;">
+            <div style="width: 140px;">
+                <label class="col-lg control-label">微信客服</label>
+            </div>
+            <div id="WXkefu" style="flex-grow: 1;">
+                {if empty($data['wx'])}
+                <div class="col-sm-9 col-xs-12 addhtml" >
+                    <input type="text" class="form-control qqkefu"  name="wx_nick[]" value="{$wx['wxnickname']}" placeholder="请在此输入客服昵称"/>
+                    <input type="hidden" class="form-control qqkefu wximage"  name="wx_img[]" value="{$wx['wximg']}" placeholder=""/>
+                    <p><a href="javascript:;" onclick="selectSpecItemImage(this);" style="float: left;margin:5px "> <image src="{$wx['wximg']}" class="codeimg" style="width: 60px"/></a></p>
+                    <p><a href="javascript:;" onclick="addwx();" style="float: left;">新增</a></p>
+                    <p><a href="javascript:;" onclick="removewx(this);" style="float: left;margin-left: 10px">删除</a></p>
+                </div>
+                {/if}
+                {loop $data['wx'] $k $wx}
+                <div class="col-sm-9 col-xs-12 addhtml" >
+                    <input type="text" class="form-control qqkefu"  name="wx_nick[]" value="{$wx['wxnickname']}" placeholder="请在此输入客服昵称"/>
+                    <input type="hidden" class="form-control qqkefu wximage"  name="wx_img[]" value="{$wx['wximg']}" placeholder=""/>
+                    <p><a href="javascript:;" onclick="selectSpecItemImage(this);" style="float: left;margin:5px "> <image src="{$wx['wximg']}" class="codeimg" style="width: 60px"/></a></p>
+                    <p><a href="javascript:;" onclick="addwx();" style="float: left;">新增</a></p>
+                    <p><a href="javascript:;" onclick="removewx(this);" style="float: left;margin-left: 10px">删除</a></p>
+                </div>
+                {/loop}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg control-label" >独立域名</label>
+            <div class="col-sm-9 col-xs-12">
+                <input type='text' class='form-control' name='domain' value="{$data['domain']}" style="width: 50%;"/>
+                <span class='help-block red'>开启独立域名之后将会pc的所有链接都走独立链接</span>
+            </div>
+        </div>
+      <div class="form-group">
+            <label class="col-lg control-label" >手机端域名</label>
+            <div class="col-sm-9 col-xs-12">
+                <input type='text' class='form-control' name='mobile_domain' value="{$data['mobile_domain']}" style="width: 50%;"/>
+                <span class='help-block red'>用于生成二维码手机扫描</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg control-label"></label>
+            <div class="col-sm-9">
+                {ifp 'sysset.cover.' . $cover['key'] . '.edit'}
+                <input type="submit" value="提交" class="btn btn-primary" />
+                {/if}
+            </div>
+        </div>
+
+    </form>
+</div>
+{template '_footer'}
+<script>
+    function addqq(){
+        var count = $('#QQkefu').children('div').length;
+        if (count>4){
+            alert('最多添加5个');return;
+        }
+        var html = '';
+        html += '<div class="col-sm-9 col-xs-12 addhtml" >';
+        html +='<input type="text" class="form-control qqkefu"  name="qq_nick[]" value="" placeholder="请在此输入客服昵称"/>';
+        html +='<input type="text" class="form-control qqkefu"  name="qq_num[]" value="" placeholder="请在此输入QQ号"/>';
+        html +='<p><a href="javascript:;" onclick="addqq();" style="float: left;margin-left: 10px">新增</a></p>';
+        html +='<p><a href="javascript:;" onclick="removeqq(this);" style="float: left;margin-left: 10px">删除</a></p>';
+        html += ' </div>';
+        $("#QQkefu").append(html);
+
+    }
+    function removeqq(e){
+        console.log( $(e).parents('.addhtml'));
+        $(e).parents('.addhtml').remove();
+    }
+    function addwx(){
+        var count = $('#WXkefu').children('div').length;
+        if (count>3){
+            alert('最多添加4个');return;
+        }
+        var html = "";
+        html += "<div class='col-sm-9 col-xs-12 addhtml' >";
+        html += "<input type='text' class='form-control qqkefu'  name='wx_nick[]' value='' placeholder='请在此输入客服昵称'/>";
+        html += "<input type='hidden' class='form-control qqkefu wximage'  name='wx_img[]' value='' placeholder=''/>";
+        html += " <p><a href='javascript:;' onclick='selectSpecItemImage(this);' style='float: left;margin: 5px'> <image class='codeimg' src='resource/images/nopic-107.png' style='width: 60px'/></a></p>";
+        html += "<p><a href='javascript:;' onclick='addwx();' style='float: left;'>新增</a></p>";
+        html += "<p><a href='javascript:;' onclick='removewx(this);' style='float: left;margin-left: 10px'>删除</a></p>";
+        html += " </div>";
+        $("#WXkefu").append(html);
+    }
+    function removewx(e){
+        $(e).parents('.addhtml').remove();
+    }
+    function selectSpecItemImage(obj){
+        util.image('',function(val){
+            $(obj).attr('src',val.url).popover({
+                trigger: 'hover',
+                html: true,
+                container: $(document.body),
+                content: "<img src='" + val.url  + "' style='width:100px;height:100px;' />",
+                placement: 'top'
+            });
+            $(obj).parents('div').children('.wximage').val(val.url);
+            $(obj).children('.codeimg').attr('src',val.url);
+            var group  =$(obj).parent();
+            group.find(':hidden').val(val.attachment), group.find('i').show().unbind('click').click(function(){
+                $(obj).attr('src',"{EWEI_SHOPV2_LOCAL}static/images/nopic100.jpg");
+                group.find(':hidden').val('');
+                group.find('i').hide();
+                $(obj).popover('destroy');
+            });
+        });
+    }
+    // 市场监管标识js
+    if($('input[name="advBanner"]:checked').val() == 1) {
+        $('.advBanner').show()
+    }else {
+        $('.advBanner').hide()
+    }
+    $('input[name="advBanner').click(function () {
+        if($(this).val() == 1) {
+            $('.advBanner').show()
+        }else {
+            $('.advBanner').hide()
+        }
+    })
+
+</script>

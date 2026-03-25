@@ -1,0 +1,314 @@
+{template '_header'}
+<style>
+    .fui-list-angle {
+        text-align: right;
+        font-size: calc(28rem / 40);
+        color: #666;
+        margin-right: calc(4rem / 40);
+        line-height: 1.5
+    }
+
+    .fui-list.goods-item {
+        height: calc(140rem / 40);
+        padding: calc(16rem / 40) calc(24rem / 40)
+    }
+
+    .fui-list-group {
+        margin-top: 0;
+        background: #fff !important;
+    }
+
+    .fui-list-group:first-of-type {
+        /* margin-top: calc(20rem / 40) */
+    }
+
+    .fui-list-group::before {
+        content: " ";
+        position: absolute;
+        top: 0;
+        right: calc(20rem / 40);
+        height: 0;
+        border-top: calc(2rem / 40) solid #ebebeb;
+        transform-origin: 0 0;
+        transform: scaleY(0.5);
+        left: calc(20rem / 40);
+    }
+
+    .fui-list-group:first-of-type:before {
+        display: none
+    }
+
+    .hd-wp {
+        background: linear-gradient(96.87deg, #FFAC30 2.55%, #FF9255 100.51%);
+        border-radius: calc(4rem / 40);
+        overflow: hidden;
+        padding: calc(46rem / 40) 0 calc(32rem / 40) 0;
+        color: #fff;
+        text-align: center;
+        margin: calc(30rem / 40) calc(24rem / 40);
+    }
+
+    .hd-wp .title {
+        font-size: calc(24rem / 40);
+        margin-bottom: calc(16rem / 40);
+    }
+
+    .hd-wp .price {
+        font-weight: 600;
+        font-size: calc(72rem / 40);
+        line-height: calc(100rem / 40);
+        margin-bottom: calc(30rem / 40);
+    }
+
+    .hd-wp .unit {
+        font-size: calc(36rem / 40);
+        display: inline-block;
+        vertical-align: middle;
+        padding-left: calc(18rem / 40);
+    }
+
+    .hd-wp .price-btn {
+        width: calc(360rem / 40);
+        height: calc(50rem / 40);
+        line-height: calc(50rem / 40);
+        text-align: center;
+        font-size: calc(24rem / 40);
+        border: 1px solid #fff;
+        margin: 0 auto;
+        border-radius: calc(4rem / 40);
+    }
+
+    .apc {
+        font-size: calc(28rem / 40);
+        line-height: calc(40rem / 40);
+        color: #666666;
+        font-weight: normal;
+    }
+
+    .fui-tab .item.active {
+        color: #ff5555;
+        position: relative;
+        z-index: 10;
+    }
+
+    .fui-tab .item.active:before {
+        content: "";
+        height: calc(4rem / 40);
+        width: 100%;
+        background: #fe5455;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: 1;
+    }
+
+    .fui-tab .item {
+        color: #666;
+        font-size: calc(28rem / 40);
+        height: calc(80rem / 40);
+        line-height: calc(80rem / 40);
+        flex: 1;
+        border: 0;
+        border-radius: 0;
+        text-align: center;
+    }
+
+    .fui-list-inner {
+        /* min-height: calc(170rem / 40); */
+        display: flex;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        justify-content: space-between
+    }
+
+    .fui-loading {
+        width: 65%;
+        margin: 1.5em auto;
+        line-height: 1.6em;
+        font-size: 14px;
+        text-align: center;
+        position: relative
+    }
+
+    .fui-loading.empty {
+        color: #999;
+    }
+
+    .fui-loading.line .text,
+    .fui-loading.empty .text {
+        padding: 0 calc(20rem / 40);
+        background: #f3f3f3;
+        position: relative;
+        text-align: center;
+        z-index: 2;
+    }
+
+    .fui-loading.empty {
+        color: #999;
+    }
+
+    .fui-loading .text {
+        display: inline-block;
+        vertical-align: middle;
+    }
+</style>
+
+<!--<div class="fui-header" style="position: static;background:#fff;">-->
+<!--    <div class="fui-header-left">-->
+<!--        <a class="back"></a>-->
+<!--    </div>-->
+<!--    <div class="title">我的积分</div>-->
+<!--    <div class="fui-header-right"></div>-->
+<!--</div>-->
+
+<!--<div class="page navbar">-->
+<!--    <div class="hd-wp">-->
+<!--        <div class="title">当前积分</div>-->
+<!--        <div class="price">123.00<div class="unit">积分</div>-->
+<!--        </div>-->
+<!--        <div url="/pages/member/accounts/index?type=2" class="price-btn">转账</div>-->
+<!--    </div>-->
+
+<!--    <div class="fui-tab fui-tab-danger" style="margin:0">-->
+<!--        <div class="item active">充值记录</div>-->
+<!--        <div class="item">使用记录</div>-->
+<!--    </div>-->
+
+<!--    <div>-->
+<!--        <div class="fui-list-group">-->
+<!--            <div class="fui-list goods-item">-->
+<!--                <div class="fui-list-inner">-->
+<!--                    <div class="title">-->
+<!--                        <span>转账余额 剩余:<span class="apc">123元</span></span>-->
+<!--                    </div>-->
+<!--                    <div class="title">提现到</div>-->
+<!--                    <div class="text">2020-01-01 12:12:12</div>-->
+<!--                </div>-->
+
+<!--                <div class="fui-list-angle">-->
+<!--                    <div style="font-size: calc(30rem / 40);color: #000;">+1元</div>-->
+<!--                    <div class="text-warning">未充值</div>-->
+<!--                    <div class="text-danger">退款</div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="fui-list" style="height: calc(50rem / 40);">-->
+<!--                <div class="fui-list-inner">-->
+<!--                    <div class="text"-->
+<!--                        style="display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;">-->
+<!--                        <div style="margin-right: calc(30rem / 40)">实际: 1元</div>-->
+<!--                        <div>手续费: 1元</div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="fui-loading empty">-->
+<!--        <div class="text">没有数据</div>-->
+<!--    </div>-->
+<!--</div>-->
+
+
+
+
+
+<div style="" class='fui-page  fui-page-current member-log-page'>
+    <div class="fui-header">
+        <div class="fui-header-left">
+            <a class="back"></a>
+        </div>
+        <div class="title">{if $_W['shopset']['trade']['withdraw']}{$_W['shopset']['trade']['credittext']}明细{else}充值记录{/if}</div>
+    </div>
+
+    <div class="page navbar" style="margin-top: 58px;">
+
+        <div class="hd-wp">
+            <div class="title">当前积分</div>
+            <div class="price">{$member['credit1']}<div class="unit">{$_W['shopset']['trade']['credittext']}</div></div>
+            {if $showTransfer}
+            <a style="color: #fff" href="{php echo mobileurl('transfer_account/ts', array('type' => 'credit1'))}"><div class="price-btn">{php echo $set['texts']['transfer_text'] ?: '转账'}</div></a>
+            {/if}
+        </div>
+
+    </div>
+
+
+    <div class='fui-content navbar' style="{if $showTransfer} margin-top: 190px; {else} margin-top: 160px;{/if}">
+
+        {if $_W['shopset']['trade']['withdraw']}
+        <div id="tab" class="fui-tab fui-tab-danger" style=" margin: 0 !important;">
+            <a data-tab="tab1" class="external {if $_GPC['type']==0}active{/if}" data-type='0'>充值记录</a>
+            <a data-tab="tab2" class='external {if $_GPC['type']==1}active{/if}' data-type='1'>使用记录</a>
+        </div>
+        {/if}
+
+
+        <div class='content-empty' style='display:none;'>
+            <i class='icon icon-searchlist'></i><br />暂时没有任何记录!
+        </div>
+
+        <div class='fui-list-group container' style="display:none;background: #f3f3f3"></div>
+        <div class='infinite-loading'><span class='fui-preloader'></span><span class='text'> 正在加载...</span></div>
+    </div>
+
+    <script id="tpl_member_credit_list" type="text/html">
+
+        <%each list as log%>
+        <div class="fui-list goods-item <%if log.type==1%>no-border<%/if%>" <%if log.type==1%>style="height:2.75rem"<%/if%>>
+
+            <div class="fui-list-inner">
+                <div class='title' <%if log.rechargetype==""%>style="display:none"<%/if%>>
+                    <!--<%if log.type==0%>充值金额: <%/if%>-->
+                    <!--<%if log.type==1%>提现金额: <%/if%>-->
+                    <!--<%if log.type==2%>佣金打款: <%/if%>-->
+                    <%if log.rechargetype=="wechat"%>微信充值<%/if%>
+                    <%if log.rechargetype=="alipay"%>支付宝充值<%/if%>
+                    <%if log.rechargetype=="system"%>后台充值<%/if%>
+                    <%if log.rechargetype=="credit"%><%log.title%><%/if%>
+                    <%if log.rechargetype=="exchange"%>兑换中心<%/if%>
+                    <%if log.rechargetype=="creditshop"%>积分兑换<%/if%>
+                    <%if log.rechargetype=="user"%>用户转账<%/if%>
+                </div>
+            <%if log.type==1%>
+                    <div class='title'> 提现到<%log.typestr%></div>
+            <%/if%>
+                <div class='text'><%log.createtime%></div>
+            </div>
+            <div class='fui-list-angle'>
+                <div style="font-size: .75rem;color: #000;"><%if log.money>0%>+<%/if%><%log.money%></div>
+                <%if log.status==0%>
+                <span class=' text-warning'><%if log.type==0%>未充值<%else%>申请中<%/if%></span>
+                <%/if%>
+                <%if log.status==1%>
+                <!--<span  class='fui-label fui-label-success'>成功</span>-->
+                <%/if%>
+                <%if log.status==-1%>
+                <span  class=' text-danger'><%if log.type==1%>提现失败<%/if%></span>
+                <%/if%>
+                <%if log.status==3%>
+                <span  class=' text-default'><%if log.type==0%>退款<%/if%></span>
+                <%/if%>
+
+            </div>
+
+        </div>
+        <%if log.type==1%>
+        <div class="fui-list" style="height: 1.85rem;margin-bottom: .5rem">
+            <div class="fui-list-inner">
+                <div class='text' style="display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;"><div style="margin-right: .75rem">实际<%if log.status==1%>到账<%else%>金额<%/if%>:<%if log.deductionmoney>0%><%log.realmoney%><%else%><%log.money%><%/if%>元</div><div >手续费:<%log.deductionmoney%> 元</div></div>
+            </div>
+        </div>
+        <%/if%>
+        <%/each%>
+    </script>
+
+    <script language='javascript'>require(['biz/member/credit'], function (modal) {
+            modal.init({ type: "{$_GPC['type']}" });
+        });</script>
+    {php $this->footerMenus()}
+</div>
+{template '_footer'}

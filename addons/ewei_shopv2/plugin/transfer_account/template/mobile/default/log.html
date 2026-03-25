@@ -1,0 +1,474 @@
+{template '_header'}
+<style>
+    .fui-list-angle {
+        text-align: right;
+        font-size: calc(28rem / 40);
+        color: #666;
+        margin-right: calc(4rem / 40);
+        line-height: 1.5
+    }
+
+    .fui-list.goods-item {
+        height: calc(88rem / 40);
+        padding: calc(16rem / 40) calc(24rem / 40)
+    }
+
+    .fui-list-group {
+        margin-top: 0
+    }
+
+    .fui-list-group:first-of-type {
+        margin-top: calc(20rem / 40)
+    }
+
+    .fui-list-group::before {
+        content: " ";
+        position: absolute;
+        top: 0;
+        right: calc(20rem / 40);
+        height: 0;
+        border-top: calc(2rem / 40) solid #ebebeb;
+        transform-origin: 0 0;
+        transform: scaleY(0.5);
+        left: calc(20rem / 40);
+    }
+
+    .fui-list-group:first-of-type:before {
+        display: none
+    }
+
+    .navbar {
+        top: calc(92rem / 40);
+        position: fixed;
+        width: 100%;
+    }
+
+    .flex-head .flex-head-item {
+        padding: 0 calc(16rem / 40);
+    }
+
+    .flex-head-search {
+        position: relative;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        box-sizing: border-box;
+        background: #f1f1f2;
+        padding: calc(20rem / 40);
+    }
+
+    .flex-icon-search {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        left: 0px;
+        top: 0px;
+        line-height: 30px;
+        text-align: center;
+
+    }
+
+    .flex-icon-search .icox {
+        position: absolute;
+        font-size: calc(36rem / 40);
+        color: #b4b4b4;
+        top: 0;
+        left: calc(12rem / 40);
+        line-height: calc(56rem / 40);
+
+    }
+
+    .flex-search-bar {
+        padding-top: calc(80rem / 40);
+    }
+
+    .flex-input {
+        height: calc(56rem / 40);
+        line-height: calc(56rem / 40);
+        display: block;
+        overflow: hidden;
+    }
+
+    .category-search {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        z-index: 100;
+    }
+
+    .category-search::before {
+        background: #fff;
+        position: relative;
+        z-index: 10;
+        height: auto;
+        padding-right: calc(20rem / 40);
+        padding-left: calc(20rem / 40);
+        background-color: #f7f7f8;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        overflow: hidden;
+
+    }
+
+    .category-search-form {
+        background: #fff;
+    }
+
+    .category-search-box {
+        /* background:#efefef; */
+        display: flex;
+    }
+
+    .searchbar {
+        height: 2.4rem;
+    }
+
+    .searchbar-cancel.searchbtn {
+        width: calc(80rem / 40);
+        background: #f1f1f2;
+        height: calc(56rem / 40);
+        text-align: right;
+        color: #5f646e;
+        line-height: calc(56rem / 40);
+        display: none;
+    }
+
+    .searchbar-cancel.searchbtn.in {
+        display: block;
+    }
+
+    .category-content {
+        background: #fff;
+        width: 100%;
+        position: absolute;
+        left: 0;
+        top: calc(0rem / 40);
+        bottom: 0px;
+    }
+
+    .category-search-bar {
+        padding-top: calc(98rem / 40);
+    }
+
+    .category-content-left {
+        width: calc(210rem / 40);
+        height: 100%;
+        background: #f8f8f8;
+    }
+
+    .weui-search-bar__input {
+        text-align: left;
+        color: #999999;
+        background: none;
+        line-height: 30px;
+        padding: 0 calc(10rem / 40) 0 calc(60rem / 40);
+    }
+
+    .fui-tab .ac.item {
+        border-bottom: 2px solid #FF5555;
+    }
+
+    .main {
+        /*position: relative;*/
+        z-index: 9;
+
+        height: 100%;
+        box-sizing: border-box;
+    }
+
+    .mitem {
+        padding: calc(28rem / 40) calc(22rem / 40);
+        border-top: 1px solid #eee;
+        background: #fff;
+    }
+
+    .mitem .in {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: calc(20rem / 40);
+    }
+
+    .mitem .lb {
+        font-size: calc(28rem / 40);
+        line-height: calc(40rem / 40);
+        color: #333333;
+        display: flex;
+        align-items: center;
+    }
+
+    .mitem .date {
+        font-size: calc(24rem / 40);
+        line-height: calc(34rem / 40);
+        color: #666666;
+    }
+
+    .mitem .pic {
+        color: #FF5555;
+        font-size: calc(36rem / 40);
+        line-height: calc(50rem / 40);
+    }
+
+    .mitem .dpic {
+        color: #333333;
+        font-size: calc(28rem / 40);
+        line-height: calc(40rem / 40);
+    }
+
+    .mitem .alt {
+        font-size: calc(22rem / 40);
+        color: #999;
+    }
+
+    .fui-list-angle {
+        text-align: right;
+        font-size: calc(28rem / 40);
+        color: #666;
+        margin-right: calc(4rem / 40);
+        line-height: 1.5
+    }
+
+    .fui-list.goods-item {
+        height: calc(140rem / 40);
+        padding: calc(16rem / 40) calc(24rem / 40)
+    }
+
+    .fui-list-group {
+        margin-top: 0
+    }
+
+    .fui-list-group:first-of-type {
+        /* margin-top: calc(20rem / 40) */
+    }
+
+    .fui-list-group::before {
+        content: " ";
+        position: absolute;
+        top: 0;
+        right: calc(20rem / 40);
+        height: 0;
+        border-top: calc(2rem / 40) solid #ebebeb;
+        transform-origin: 0 0;
+        transform: scaleY(0.5);
+        left: calc(20rem / 40);
+    }
+
+    .fui-list-group:first-of-type:before {
+        display: none
+    }
+
+    .hd-wp {
+        background: linear-gradient(96.87deg, #FFAC30 2.55%, #FF9255 100.51%);
+        border-radius: calc(4rem / 40);
+        overflow: hidden;
+        padding: calc(46rem / 40) 0 calc(32rem / 40) 0;
+        color: #fff;
+        text-align: center;
+        margin: calc(30rem / 40) calc(24rem / 40);
+    }
+
+    .hd-wp .title {
+        font-size: calc(24rem / 40);
+        margin-bottom: calc(16rem / 40);
+    }
+
+    .hd-wp .price {
+        font-weight: 600;
+        font-size: calc(72rem / 40);
+        line-height: calc(100rem / 40);
+        margin-bottom: calc(30rem / 40);
+    }
+
+    .hd-wp .unit {
+        font-size: calc(36rem / 40);
+        display: inline-block;
+        vertical-align: middle;
+        padding-left: calc(18rem / 40);
+    }
+
+    .hd-wp .price-btn {
+        width: calc(360rem / 40);
+        height: calc(50rem / 40);
+        line-height: calc(50rem / 40);
+        text-align: center;
+        font-size: calc(24rem / 40);
+        border: 1px solid #fff;
+        margin: 0 auto;
+        border-radius: calc(4rem / 40);
+    }
+
+    .apc {
+        font-size: calc(28rem / 40);
+        line-height: calc(40rem / 40);
+        color: #666666;
+        font-weight: normal;
+    }
+
+    .fui-tab .item.active {
+        color: #ff5555;
+        position: relative;
+        z-index: 10;
+    }
+
+    .fui-tab .item.active:before {
+        content: "";
+        height: calc(4rem / 40);
+        width: 100%;
+        background: #fe5455;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: 1;
+    }
+
+    .fui-tab .item {
+        color: #666;
+        font-size: calc(28rem / 40);
+        height: calc(80rem / 40);
+        line-height: calc(80rem / 40);
+        flex: 1;
+        border: 0;
+        border-radius: 0;
+        text-align: center;
+    }
+
+    .fui-list-inner {
+        /* min-height: calc(170rem / 40); */
+        display: flex;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        justify-content: space-between
+    }
+
+    .fui-loading {
+        width: 65%;
+        margin: 1.5em auto;
+        line-height: 1.6em;
+        font-size: 14px;
+        text-align: center;
+        position: relative
+    }
+
+    .fui-loading.empty {
+        color: #999;
+    }
+
+    .fui-loading.line .text,
+    .fui-loading.empty .text {
+        padding: 0 calc(20rem / 40);
+        background: #f3f3f3;
+        position: relative;
+        text-align: center;
+        z-index: 2;
+    }
+
+    .fui-loading.empty {
+        color: #999;
+    }
+
+    .fui-loading .text {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .weui-search-bar__form {
+        display: block !important;
+        width: 100%;
+    }
+
+    .weui-search-bar__input {
+        border: 0;
+        background: #fff;
+        border: 1px solid #eee;
+    }
+</style>
+
+<div style="" class='fui-page  fui-page-current member-log-page'>
+    <div class="fui-header" style="position: static;background:#fff;">
+        <div class="fui-header-left">
+            <a class="back"></a>
+        </div>
+        <div class="title">{if $_GPC['type'] == 'credit1'}{$_W['shopset']['trade']['credittext']}{else}{$_W['shopset']['trade']['moneytext']}{/if}{php echo $set['texts']['transfer_text'] ?: '转账'}明细</div>
+        <div class="fui-header-right"></div>
+    </div>
+
+
+    <div class='fui-content ' style="">
+
+        <div style="margin:0 0.5rem;" class="searchbar">
+            <div class="search-input">
+                <i class="icon icon-search"></i>
+                <input type="search" name="keywords" class="keywords" placeholder="请输入会员名称/UID">
+            </div>
+        </div>
+
+        <div id="tab" class="fui-tab fui-tab-danger" style="margin: 0;">
+            <a data-tab="tab1" class="item {if $_GPC['type']==0}active{/if} " data-type="in">转入记录</a>
+            <a data-tab="tab2" class="item {if $_GPC['type']==1}active{/if} " data-type="out">转出记录</a>
+        </div>
+
+
+        <div class='content-empty' style='display:none;'>
+            <i class='icon icon-searchlist'></i><br/>暂时没有任何记录!
+        </div>
+
+        <div class='fui-list-group container' style="display:none;background: #f3f3f3"></div>
+        <div class='infinite-loading'><span class='fui-preloader'></span><span class='text'> 正在加载...</span></div>
+    </div>
+
+    <script id="tpl_transfer_log_list" type="text/html">
+
+        <div class="main">
+            <%each list as log%>
+
+            <div class="mitem">
+                <div class="in">
+                    <span class="lb"><%log.time_text%></span>
+                    <span class="date"><%log.create_time%></span>
+                </div>
+
+                <div class="in">
+                    <span class="lb">转账金额：</span>
+                    <span class="dpic">￥<%log.credit%></span>
+                </div>
+
+                <div class="in">
+                    <span class="lb">
+                        <span>实际到账<%log.credit_text%>：</span>
+                        <%if log.credit_type == 'credit2' %>
+                            <span class="alt">(扣除手续费: <%log.service_recharge_scale%>)</span>
+                        <%/if%>
+                    </span>
+                    <span class="pic"><%log.final_price%></span>
+                </div>
+
+                <div class="in">
+                    <span class="lb">当前<%log.credit_text%>：</span>
+                    <span class="dpic">￥<%log.surplus%></span>
+                </div>
+
+                <div class="in">
+                    <span class="lb"><span><%log.transfer_text%>：</span><span class="alt"><%log.nickname%> (UID:<%log.uid%>)</span></span>
+                </div>
+            </div>
+            <%/each%>
+        </div>
+    </script>
+
+
+    <script language='javascript'>
+        require(['../addons/ewei_shopv2/plugin/transfer_account/static/js/log.js'], function (modal) {
+            modal.init({type: '{$_GPC['type']}', listType: 'in'});
+        });
+
+
+    </script>
+</div>
+</div>
+
+{template '_footer'}

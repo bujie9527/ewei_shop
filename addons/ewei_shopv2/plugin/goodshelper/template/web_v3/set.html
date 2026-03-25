@@ -1,0 +1,68 @@
+{template '_header'}
+<style>
+    #stoop_key {
+        text-align:center;
+        display: inline-block;
+        font-size: 12px;
+        font-weight:bold;
+        position:relative;
+        cursor: pointer;
+        text-decoration-line: underline;
+        color: #44ABF7;
+        width: 60px;
+    }
+    .stoop {
+        width: 460px;
+        position: absolute;
+        top: -70px;
+        left: 48px;
+        z-index: 9999;
+        display: none;
+    }
+</style>
+<div class="page-header">当前位置：<span class="text-primary">接口设置</span> </div>
+<div class="page-content">
+
+
+    <form id="setform"  {ifp 'goodshelper.set.edit'}action="" method="post"{/if} class="form-horizontal form-validate">
+
+    <div class="form-group">
+        <label class="col-lg control-label" style="height: 38px;line-height: 24px;">接口申请</label>
+        <div class="col-sm-9 col-xs-12">
+            <p class='form-control-static'>
+                <a href="https://www.99api.com/Login?log=5&referee=4424" class="js-clip" title='' target="_blank">
+                    点击申请接口
+                </a>
+                注册完毕后输入您的apikey<span id="stoop_key">【示例】<span class="stoop"><img src="../addons/ewei_shopv2/plugin/goodshelper/static/images/key.png" alt="" style="width: 100%;height: 100%">
+                </span>
+            </span>
+            </p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg control-label must">接口apikey</label>
+        <div class="col-sm-9">
+            <input  name="apikey" class="form-control" value="{$setApiKey['apikey']}"></input>
+        </div>
+    </div>
+
+    {ifp 'taobao.set.edit'}
+    <div class="form-group">
+        <label class="col-lg control-label"></label>
+        <div class="col-sm-9 col-xs-12">
+            <input type="submit"  value="提交" class="btn btn-primary" />
+        </div>
+    </div>
+    {/if}
+    </form>
+</div>
+<script>
+    $('#stoop_key').hover(function () {
+        $('#stoop_key .stoop').show();
+    },function () {
+        $('#stoop_key .stoop').hide();
+    });
+</script>
+
+{template '_footer'}

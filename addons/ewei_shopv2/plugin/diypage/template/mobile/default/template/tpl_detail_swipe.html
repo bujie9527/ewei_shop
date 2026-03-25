@@ -1,0 +1,164 @@
+<!-- 商品轮播图 -->
+<style>
+    .fui-swipe-page {text-align: center; bottom: {$diyitem['style']['bottom']}px; height: 12px; line-height: 12px; padding: 0 {$diyitem['style']['leftright']}px;}
+    .fui-swipe-bullet {background: {$diyitem['style']['background']}; opacity: {$diypage['style']['opacity']}; height: 12px; width: 12px;}
+    .fui-swipe-bullet.active {background: {$diyitem['style']['background']}; opacity: 1;}
+    .fui-swipe-page.square .fui-swipe-bullet {height: 12px; width: 12px; border-radius: 0;}
+    .fui-swipe-page.rectangle .fui-swipe-bullet {height: 12px; width: 20px; border-radius: 0;}
+    /* 首图轮播样式 */
+    #videoFirst {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+    .videoBtn {
+        width: auto;
+        height: auto;
+        position: absolute;
+        bottom: 45px;
+        left: 50%;
+        margin-left: -50px;
+        z-index: 10;
+    }
+    .videoBtn .video_btn {
+        display: inline-block;
+        color: #ff5555;
+        width: 40px;
+        height: 22px;
+        border-radius: 10px;
+        text-align: center;
+        line-height: 22px;
+        float: left;
+        background: rgba(255, 255, 255, 0.6);
+        margin: 0 5px;
+        font-size: 12px;
+    }
+    .videoBtn .video_btn.active {
+        color: #ffffff;
+        background: #ff5555;
+    }
+</style>
+<script>
+    function getHeight(obj) {
+        if(window.screen.width < 750) {
+            var w = obj.width;
+            var h = obj.height;
+            var height = ((750*h) / w) / 40 + 'rem';
+        }else {
+            var w = obj.naturalWidth;
+            var h = obj.naturalHeight;
+            var height = ((750 * h) / w) + 'px';
+        }
+        $('.videoShow').css('height', height);
+        $('#videoFirst').css('height', height );
+        $('.fui-swipe.goods-swipe .fui-swipe-wrapper .fui-swipe-item img').css('height', 'auto');
+    }
+
+
+    // function getImg1(obj) {
+    //
+    //
+    //
+    //     // $('div').css({
+    //     //     'width':'100%',
+    //     //     'height':'100%',
+    //     //     'background':'rgba(174,174,174,0.6)',
+    //     // }).addClass('.alertImg').appendTo($('img'))
+    //
+    // }
+</script>
+<div class='fui-swipe goods-swipe' >
+    {if !empty($islive)}
+    <a class="external isliving" href="{php echo mobileUrl('live/room', array('id'=>$liveid))}">直播中</a>
+    {/if}
+
+
+    <!--  添加首图视频播放  -->
+    {if $goods['video_type'] == 2 }
+    {php $videoUrl = parseTencentVideo($goods['video_url']);}
+    {elseif $goods['video_type'] == 1}
+    {php $videoUrl =  tomedia($goods['video']);}
+    {/if}
+    {if !empty($videoUrl)}
+    <div class="fui-swipe goods-swipe videoShow">
+        {if $goods['video_cut']}
+        <video  id="videoFirst"
+                src="{php echo $videoUrl}"
+                webkit-playsinline="true"
+                playsinline x5-video-player-type="h5"
+                x5-video-player-fullscreen="true"
+                x5-video-orientation="portraint"
+                controls style='width:100%;'
+                poster="{php echo tomedia($goods['video_cut'])} " >
+        </video>
+        {else}
+        <video  id="videoFirst"
+                class="autoplay"
+                src="{php echo $videoUrl}"
+                preload="auto"
+                autoplay="autoplay" muted
+                webkit-playsinline="true"
+                playsinline x5-video-player-type="h5"
+                x5-video-player-fullscreen="true"
+                x5-video-orientation="portraint"
+                controls style='width:100%;' >
+        </video>
+        {/if}
+        <div class="videoBtn" id="videoBtn">
+            <div class="video_btn active" data-type="1">视频</div>
+            <div class="video_btn" data-type="0">图片</div>
+        </div>
+    </div>
+    {/if}
+    <div class="fui-swipe goods-swipe" id="newVideo">
+        <div class="videoBtn" {if empty($videoUrl)} style="display: none;" {/if}>
+            <div class="video_btn" data-type="1">视频</div>
+            <div class="video_btn active" data-type="0">图片</div>
+        </div>
+        <div class="fui-swipe goods-swipe" id="allSwiper" {if !empty($videoUrl)} style="display: none;" {/if}>
+            <div class='fui-swipe-wrapper'>
+                {loop $thumbs $index $thumb}
+                <div class='fui-swipe-item'>
+                    {if $index == "0" }
+                    <img src="{php echo tomedia($thumb)}" onload='getHeight(this)' />
+                    {else}
+                    <img src="{php echo tomedia($thumb)}" />
+                    {/if}
+                </div>
+                {/loop}
+            </div>
+            <div class="fui-swipe-page {$diyitem['style']['dotstyle']}"></div>
+            {if $goods['total']<=0 && !empty($_W['shopset']['shop']['saleout'])}
+            <div class="salez">
+                <img src="{php echo tomedia($_W['shopset']['shop']['saleout'])}">
+            </div>
+            {/if}
+        </div>
+    </div>
+</div>
+<script>
+
+    {if !empty($videoUrl)}
+    setTimeout(function () {
+            $('video.autoplay').get(0).pause();
+    },500)
+    {/if}
+
+        $('.videoBtn .video_btn').click(function () {
+        if($(this).data('type')==1) {
+            // 视频
+            $('#videoFirst').parent().show();
+            $('#videoFirst').parent().next('.fui-swipe').hide()
+        }else {
+            // 图片
+            $('#videoFirst').get(0).pause();
+            $('#videoFirst').parent().next('.fui-swipe').find('.fui-swipe .fui-swipe-page .fui-swipe-bullet').removeClass('active');
+            $('#videoFirst').parent().next('.fui-swipe').find('.fui-swipe .fui-swipe-page .fui-swipe-bullet:eq(0)').addClass('active');
+            $('#videoFirst').parent().next('.fui-swipe').find('.fui-swipe .fui-swipe-wrapper').css('transform','translate3d(0px, 0px, 0px)');
+            $('#videoFirst').parent().hide();
+            $('#allSwiper').show();
+            $('#newVideo').show();
+        }
+    })
+
+</script>

@@ -1,0 +1,270 @@
+{template '_header'}
+<style>
+    .importModal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,.6);
+        transition: all .4s;
+        z-index: 1112;
+        display: none;
+    }
+
+    .import {
+        width: 380px;
+        height: 160px;
+        position: absolute;
+        top: 35%;
+        left: 50%;
+        margin-left: -190px;
+        background: #fff;
+        border-radius: 6px;
+        padding: 50px 0;
+    }
+
+    .improtTitle {
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        margin: 0 auto;
+        font-size: 18px;
+        font-weight:400;
+        color:rgba(51,51,51,1);
+    }
+
+    .importImg{
+        margin: 16px auto 0;
+        width: 300px;
+        text-align: center;
+    }
+
+    .completeBtn {
+        display: flex;
+        flex-direction: row;
+        margin: 26px 96px 0;
+        width: 188px;
+        height: 30px;
+    }
+    .completeBtn .seeGoods,.completeBtn .confirmGoods {
+        display: inline-block;
+        width: 80px;
+        height: 30px;
+        background: rgba(255,255,255,1);
+        border: 1px solid rgba(232,232,232,1);
+        border-radius: 2px;
+        line-height: 28px;
+        font-size: 12px;
+        text-align: center;
+        cursor: pointer;
+    }
+    .completeBtn .seeGoods {
+        color: rgba(51,51,51,1);
+        margin-right: 22px;
+    }
+
+    .completeBtn .confirmGoods {
+        color: #fff2e2;
+        padding: 0;
+        vertical-align: top;
+    }
+    #stoop_pdd,#stoop_redBook {
+        text-align:center;
+        display: inline-block;
+        font-size: 14px;
+        font-weight:bold;
+        position:relative;
+        cursor: pointer;
+        text-decoration-line: underline;
+        color: #44ABF7;
+        width: 60px;
+    }
+    .stoop {
+        width: 300px;
+        position: absolute;
+        top: -70px;
+        left: 45px;
+        z-index: 100;
+        display: none;
+    }
+    .completeBtn .close {
+        -webkit-appearance: none;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 0;
+        cursor: pointer;
+        background: 0 0;
+        border: 0;
+        float: right;
+        font-size: 21px;
+        font-weight: 700;
+        line-height: 1;
+        color: #000;
+        text-shadow: 0 1px 0 #fff;
+        filter: alpha(opacity=20);
+        opacity: .2;
+    }
+</style>
+
+<div class="styleHide ">
+    <div class="page-header"> 当前位置：<span class="text-primary">淘宝CSV上传助手 {$type}</span>  </div>
+    <div class="page-content">
+        <div class='alert alert-danger'>尽量在服务器空闲时间来操作，会占用大量内存与带宽，在获取过程中，请不要进行任何操作!</div>
+        <form id="dataform" action="" method="post" class="form-horizontal form">
+            <div class="form-group" style="">
+                <label class="col-lg control-label">选择上传方式：</label>
+                <div class="col-sm-8">
+                    <label class="radio-inline"><input type="radio" data-locationurl="taobao"  name="type" value="1"/> 商品链接上传</label>
+                    <label class="radio-inline">
+                        <input type="radio" data-locationurl="taobao"  name="type" value="2"  checked="checked" /> csv上传
+                        <!--                    <input type="radio" data-locationurl="{$type}"  name="type" value="2" /> csv上传-->
+                    </label>
+                    <div class='help-block'></div>
+                </div>
+            </div>
+        </form>
+        <div class="summary_box">
+            <div class="summary_title">
+                <span class="title_inner">淘宝CSV上传助手</span>
+            </div>
+            <div class="summary_lg">
+                功能介绍：可将淘宝助理以及其他途径获取的淘宝商品CSV文件快速上传至商城,节约您的大量时间!
+                <br>
+                <span>使用方法： 1. 将您获取到的CSV文件转存为Excel格式,否则将无法识别</span>
+                <br><span style="padding-left: 64px;">2. 将配套的图片文件包压缩为Zip格式压缩包并且导入(图片需在压缩包根目录下)</span>
+                <br><span style="padding-left: 64px;">3. 确认上传即可</span>
+                <dl style="margin:5px 0;">
+                    <dt style="float:left;font-weight:normal;">示例文件：</dt>
+                    <dd style="float:left;"><a href="{php echo $excelurl}" >Excel示例文件下载</a><br /><a href="{php echo $zipurl}" >Zip示例文件下载</a></dd>
+                </dl>
+                <div style="clear:both;"></div>
+            </div>
+        </div>
+
+        <form id="importform" class="form-horizontal form" action="" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label class="col-lg control-label must">EXCEL</label>
+                <div class="col-sm-5 goodsname"  style="padding-right:0;" >
+                    <input type="file" name="excelfile" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg control-label must">ZIP</label>
+                <div class="col-sm-5 goodsname"  style="padding-right:0;" >
+                    <input type="file" name="zipfile" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg control-label"> </label>
+                <div class="col-sm-9">
+                    <input id="btn_import" type="submit"  value="确认导入" class="btn btn-primary" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="importModal">
+    <div class="import">
+        <div class="improtTitle">正在导入中...</div>
+        <div class="importImg"><img src="../addons/ewei_shopv2/plugin/goodshelper/static/images/progess.gif" alt="" style="width: 100%;"></div>
+        <div class="completeBtn hide">
+            <button type="button" class="close">
+                <span>×</span>
+            </button>
+            <div class="seeGoods" onclick="seeGoods()">查看商品</div>
+            <div class="confirmGoods btn btn-primary" onclick="confirmGoods()">确定</div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(":input[type=radio]").on('click',function () {
+        if($(this).data('locationurl')=='taobao') {
+            location.href = "{php echo webUrl('goodshelper/index')}";
+        }
+        // if($(this).data('locationurl')=='jd'){
+        //     location.href = "{php echo webUrl('goodshelper/jdcsv')}";
+        // }
+    });
+    $('.close').on('click',function(){
+        $('.importModal').fadeOut(200);
+        location.href = "{php echo webUrl('goodshelper/taobaocsv')}";
+    });
+
+    var total = {php echo $uploadnum};
+    var uploadStart = {php echo $uploadStart};
+    var len =0;
+
+    if(uploadStart ==1)
+    {
+        $("#dataform").attr("disabled", "true");
+        fetch_next();
+    }
+
+    $('#importform').submit(function(e){
+
+        if(!$(":input[name=excelfile]").val()){
+            tip.msgbox.err("您还未选择Excel文件哦~");
+            return false;
+        }
+        var AllImgExt=".xls|.xlsx|";
+        var excelfile =$(":input[name=excelfile]").val()
+        var extName = excelfile.substring(excelfile.lastIndexOf(".")).toLowerCase();
+        if(AllImgExt.indexOf(extName+"|")==-1)
+        {
+            tip.msgbox.err("Excel文件类型不正确哦~");
+            return false;
+        }
+
+        if(!$(":input[name=zipfile]").val()){
+            tip.msgbox.err("您还未选择Zip文件哦~");
+            return false;
+        }
+        var AllImgExt=".zip|";
+        var excelfile =$(":input[name=zipfile]").val()
+        var extName = excelfile.substring(excelfile.lastIndexOf(".")).toLowerCase();
+        if(AllImgExt.indexOf(extName+"|")==-1)
+        {
+            tip.msgbox.err("Zip文件类型不正确哦~");
+            return false;
+        }
+    });
+
+
+    function fetch_next() {
+        $('.importModal').fadeIn(300);
+        $('.import').show();
+        var postdata =  {
+            num: len,
+            totalnum: total
+        };
+        $.post("{php echo webUrl('goodshelper/taobaocsv/fetch')}",
+            postdata,
+            function (data) {
+                console.log(data);
+                len++;
+                $('.import .improtTitle').html('正在导入 ( ' + len + " / " + total + ')...');
+                if (len >= total) {
+                    $('.import .improtTitle').html('已经导入'+total+'个商品');
+                    $('.importImg').addClass('hide');
+                    $('.import .completeBtn').removeClass('hide').addClass('show');
+                }
+                else {
+                    fetch_next();
+                }
+
+            }, "json");
+    }
+    function seeGoods() {
+        location.href = "{php echo webUrl('goods' ,array('goodsfrom'=>stock))}";
+    }
+    function confirmGoods() {
+        $('.importGoods').fadeOut(200);
+        location.href = "{php echo webUrl('goodshelper/taobaocsv')}";
+    }
+    $('.single').children('li').eq(0).addClass('active');
+</script>
+
+{template '_footer'}

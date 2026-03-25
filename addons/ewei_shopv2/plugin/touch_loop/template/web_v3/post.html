@@ -1,0 +1,137 @@
+{template '_header'}
+<style type="text/css">
+    .multi-img-details .multi-item img{height:100px;}
+    .table > thead > tr > th,
+    .table > tbody > tr > th,
+    .table > tfoot > tr > th,
+    .table > thead > tr > td,
+    .table > tbody > tr > td,
+    .table > tfoot > tr > td {
+        border-top: none;
+    }
+    .refund-group{display: none;}
+
+</style>
+<div class="page-header">
+
+    当前位置：<span class="text-primary"> {if !empty($item['id'])}编辑{else}添加{/if}素材 <small>{if !empty($item['id'])}修改【{$goods['title']}】{/if}</small></span>
+</div>
+
+<div class="page-content">
+    <form action="" method="post"class="form-horizontal form-validate" enctype="multipart/form-data">
+
+            <div class="panel-body">
+
+                <div class="form-group">
+                    <label class="col-lg control-label">排序</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <input type='text' class='form-control' name='sort' value="{$item['sort']}" />
+                        <span class="help-block">数字越大，排名越靠前,如果为空，默认排序方式为创建时间</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-lg control-label must">选择商品</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <div>
+                            <?php echo tpl_selector('goodsid', array('required'=>true, 'preview'=>true,'url'=>webUrl('touch_loop/query'), 'items'=>$goods, 'readonly'=>true,'nokeywords'=>1,'autosearch'=>1, 'buttontext'=>'选择商品', 'placeholder'=>'请选择商品','callback'=>'select_goods'))?>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg control-label must">商品图片</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <div>
+                            {php echo tpl_form_field_multi_image2('thumbs',iunserializer($item['thumbs']))}
+                        </div>
+
+                        <span class="help-block">默认会有一个商品海报的图片</span>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg control-label must">分享内容</label>
+
+                    <div class="col-sm-9 ">
+                        <textarea id="" name="content" id="content" rows="5" data-rule-required="reu"  class="form-control" data-parent=".subtitle" maxlength="200" data-rule-maxlength="200">{$item['content']}</textarea>
+                        <div class="help-block">分享内容的长度请控制在200字以内</div>
+                    </div>
+
+                </div>
+
+
+
+
+
+
+                <div class="form-group">
+                    <label class=" col-lg control-label">是否优先</label>
+                    <div class="col-xs-12 col-sm-9">
+                        <div class="input-group">
+                            {ife 'touch_loop.edit' $item}
+                            <label class="radio radio-inline">
+                                <input type="radio" name="isrecomand" value="1" {if intval($item['isrecommand']) ==1 }checked="checked"{/if}> 开启
+                            </label>
+                            <label class="radio radio-inline">
+                                <input type="radio" name="isrecomand" value="0" {if intval($item['isrecommand']) ==0}checked="checked"{/if}> 关闭
+                            </label>
+                            {else}
+                            <div class='form-control-static'>{if intval($item['isrecommand']) ==1 }开启{else}关闭{/if}</div>
+                            {/if}
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class=" col-lg control-label">状态</label>
+                    <div class="col-xs-12 col-sm-9">
+                        <div class="input-group">
+                            {ife 'sale.fullback' $item}
+                            <label class="radio radio-inline">
+                                <input type="radio" name="status" value="1" {if intval($item['status']) ==1 }checked="checked"{/if}> 开启
+                            </label>
+                            <label class="radio radio-inline">
+                                <input type="radio" name="status" value="0" {if intval($item['status']) ==0}checked="checked"{/if}> 关闭
+                            </label>
+                            {else}
+                            <div class='form-control-static'>{if intval($item['status']) ==1 }开启{else}关闭{/if}</div>
+                            {/if}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+    <div class="form-group">
+        <label class="col-lg control-label"></label>
+        <div class="col-sm-9 col-xs-12">
+            <input type="submit"  value="提交" class="btn btn-primary" />
+        </div>
+    </div>
+
+
+    </form>
+</div>
+<script>
+    function select_goods(object)
+    {
+        $(' .multi-img-details').eq(1).empty();
+        var html = '<div class="multi-item"><img onerror="this.src=\'../addons/ewei_shopv2/static/images/nopic.png\'; this.title=\'图片未找到.\'" src="'+object.thumb+'" class="img-responsive img-thumbnail"><input type="hidden" name="thumbs[]" value="'+object.thumb_tmp+'"><em class="close" title="删除这张图片" onclick="deleteMultiImage(this)">×</em></div>';
+        $(' .multi-img-details').eq(1).append(html);
+        // return;
+        var length = object.thumb_url.media.length;
+        var item = object.thumb_url.media;
+        var thumbs  = object.thumb_url.thumb;
+        for (var i =0 ; i < length ; i ++)
+        {
+            var html = '<div class="multi-item"><img onerror="this.src=\'../addons/ewei_shopv2/static/images/nopic.png\'; this.title=\'图片未找到.\'" src="'+item[i]+'" class="img-responsive img-thumbnail"><input type="hidden" name="thumbs[]" value="'+thumbs[i]+'"><em class="close" title="删除这张图片" onclick="deleteMultiImage(this)">×</em></div>';
+       $(' .multi-img-details').eq(1).append(html);
+        }
+
+    }
+
+
+</script>
+{template '_footer'}

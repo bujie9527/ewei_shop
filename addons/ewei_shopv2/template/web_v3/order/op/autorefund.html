@@ -1,0 +1,18 @@
+<form class="form-horizontal form-validate" action="{php echo webUrl('order/op/autorefund/submit')}" method="post" enctype="multipart/form-data">
+    <input type='hidden' name='id' value='{$id}' />
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button data-dismiss="modal" class="close" type="button">×</button>
+                <h4 class="modal-title">退款原因</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="reason" value="商家缺货" style="display: none">
+            </div> 
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit">提交</button>
+                <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            </div>
+        </div>
+</form>

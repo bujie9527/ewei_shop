@@ -1,0 +1,564 @@
+{template '_header'}
+<style>
+    .shadow-wp {
+        background: #000000;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        opacity: 0.6;
+    }
+
+    .dialog {
+        position: absolute;
+        left: calc(32rem / 40);
+        right: calc(32rem / 40);
+        background: #ffffff;
+        height: calc(912rem / 40);
+        top: 50%;
+        transform: translate(0, -50%);
+        border-radius: 6px;
+        padding: calc(32rem / 40) calc(24rem / 40);
+        z-index: 999;
+    }
+
+    .dialog .alttith {
+        text-align: center;
+        color: #000000;
+        font-size: calc(36rem / 40);
+        font-weight: bold;
+        line-height: 50px;
+        margin-bottom: calc(16rem / 40);
+    }
+
+    .dialog .alt {
+        color: #FF5555;
+        font-style: calc(24rem / 40);
+        line-height: calc(34rem / 40);
+        margin-bottom: calc(32rem / 40);
+        text-align: center;
+    }
+
+    .dialog .up {
+        font-size: calc(24rem / 40) !important;
+        line-height: 34px;
+    }
+
+    .dialog .info-wp {
+        margin-bottom: calc(36rem / 40);
+    }
+
+    .dialog .item {
+        border-bottom: 1px solid #E6E7EB;
+        padding-bottom: calc(20rem / 40);
+        margin-bottom: calc(20rem / 40);
+        display: flex;
+        justify-content: space-between;
+        font-size: calc(24rem / 40);
+        line-height: calc(40rem / 40);
+        font-weight: normal;
+    }
+
+    .dc {
+        text-align: right;
+    }
+
+    .dc .rc {
+        font-size: calc(24rem / 40);
+        line-height: calc(40rem / 40);
+        color: #000000;
+        vertical-align: middle;
+    }
+
+    .dc .pic {
+        font-weight: bold;
+        font-size: calc(36rem / 40);
+        line-height: calc(50rem / 40);
+        color: #FF5555;
+        vertical-align: middle;
+    }
+
+    .opts-wp {
+        position: absolute;
+        border-top: 1px solid #E6E7EB;
+        display: flex;
+        text-align: center;
+        left: 0;
+        right: 0;
+        bottom: 0
+    }
+
+    .opts-wp .aitem {
+        flex: 1;
+        height: calc(80rem / 40);
+        line-height: calc(80rem / 40);
+        display: inline-block;
+    }
+
+    .opts-wp .ac {
+        background: #FF5555;
+        color: #ffffff;
+    }
+
+    .opts-wp .dis {
+        background: #999999;
+        color: #ffffff;
+    }
+
+    .opts-wp .r {
+        border-bottom-right-radius: calc(8rem / 40);
+    }
+
+    .navigator-hover {
+        opacity: 1;
+    }
+
+    .account-wp {
+        background: #FFFFFF;
+        font-size: calc(28rem / 40);
+        line-height: calc(40rem / 40);
+        margin: calc(16rem / 40) 0;
+        padding: calc(48rem / 40) calc(24rem / 40);
+    }
+
+    .account-wp .up {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: calc(16rem / 40);
+    }
+
+    .account-wp .cb {
+        color: #518DEF;
+        font-size: calc(20rem / 40);
+    }
+
+    .search {
+        border: 1px solid #E6E7EB;
+        height: calc(80rem / 40);
+        background: #F5F5F5;
+        margin-bottom: calc(48rem / 40);
+        padding-left: calc(22rem / 40);
+    }
+
+    .sp {
+        color: #CCCCCC;
+    }
+
+    .pbtn {
+        background: #FF5555;
+        border-radius: calc(8rem / 40);
+        color: #FFFFFF;
+        height: calc(80rem / 40);
+        text-align: center;
+        line-height: calc(80rem / 40);
+    }
+
+    .b {
+        font-weight: bold;
+    }
+
+    .go-detail {
+        padding: calc(20rem / 40) calc(24rem / 40);
+        background: #FFFFFF;
+        color: #212121;
+        font-size: calc(28rem / 40);
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: calc(16rem / 40);
+    }
+
+    .fui-cell,
+    .fui-cell-group {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .info-wp {
+        background: #F7F7F7;
+        border: 1px solid #E6E7EB;
+        padding: calc(32rem / 40) calc(24rem / 40);
+        display: flex;
+        align-items: center;
+    }
+
+    .image {
+        width: calc(96rem / 40);
+        height: calc(96rem / 40);
+        border-radius: calc(99rem / 40);
+        margin-right: calc(16rem / 40);
+        background-size: 100%;
+    }
+
+    .name {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        word-break: break-all;
+        width: calc(270rem / 40);
+        color: #333333;
+        font-size: calc(28rem / 40);
+        line-height: calc(40rem / 40);
+        font-weight: 600;
+        margin-bottom: calc(8rem / 40);
+    }
+
+    .uid,
+    .tel {
+        font-size: calc(24rem / 40);
+        line-height: calc(34rem / 40);
+        color: #999999;
+    }
+
+    .uid {
+        color: #333333;
+        flex: 1;
+        text-align: right;
+        font-weight: 600;
+        font-size: calc(24rem / 40);
+    }
+
+    .vn {
+        visibility: hidden;
+    }
+
+    .do-wp {
+        display: flex;
+    }
+
+    .do-wp .pbtnx {
+        border: 1px solid #E6E7EB;
+        border-radius: calc(8rem / 40);
+        height: calc(78rem / 40);
+        text-align: center;
+        line-height: calc(78rem / 40);
+        flex: 1;
+        margin-right: calc(16rem / 40);
+        color: #FF5555;
+    }
+
+    .do-wp .sp {
+        margin: 0;
+        background: #FF5555;
+        color: #FFFFFF;
+    }
+
+    .do-smt-wp {
+        background: #FFFFFF;
+        padding: calc(48rem / 40) calc(24rem / 40);
+        flex: 1;
+    }
+
+    .tith {
+        color: #333333;
+        font-size: calc(28rem / 40);
+        line-height: calc(40rem / 40);
+        margin-bottom: calc(24rem / 40);
+    }
+
+    .my-wp {
+        border-bottom: 1px solid #E6E7EB;
+        font-weight: bold;
+        align-items: center;
+        color: #212121;
+        display: flex;
+        margin-bottom: calc(16rem / 40);
+    }
+
+    .my-wp .util {
+        font-size: calc(48rem / 40);
+        line-height: calc(68rem / 40);
+    }
+
+    .my-wp .price {
+        font-size: calc(80rem / 40);
+        flex: 1;
+        height: calc(112rem / 40);
+        line-height: calc(112rem / 40);
+    }
+
+    .fee-wp {
+        display: flex;
+        justify-content: space-between;
+        font-size: calc(28rem / 40);
+        line-height: calc(40rem / 40);
+        margin-bottom: calc(48rem / 40);
+    }
+
+    .fee-wp .l {
+        color: #999999;
+    }
+
+    .fee-wp .r {
+        color: #FF5555;
+        font-weight: bold;
+    }
+
+    .mq {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .navigator-hover {
+        opacity: 1;
+    }
+
+    .explain {
+        margin-top: 10px;
+        color: #aaa;
+        font-size: 12px;
+    }
+</style>
+
+<div class="fui-page">
+
+    <div class="fui-header" style="position: static;background:#fff;">
+        <div class="fui-header-left">
+            <a class="back"></a>
+        </div>
+        <div class="title">{if $type == 'credit1'}{$_W['shopset']['trade']['credittext']}{else}{$_W['shopset']['trade']['moneytext']}{/if}{php echo $set['texts']['transfer_text'] ?: '转账'}</div>
+        <div class="fui-header-right"></div>
+    </div>
+
+    <div class="fui-content mq">
+        <div class="account-wp">
+            <div class="up">
+                <span class="b">收款人信息</span>
+            </div>
+            <div class="info-wp">
+                <div class="image"
+                     style="background-image:url('{$member['avatar']}')">
+                </div>
+                <div>
+                    <div class="name">{$member['nickname']}</div>
+                    <div class="tel">手机号码：{$member['mobile']}</div>
+                </div>
+                <div class="uid">
+                    <div>UID：{$member['id']}</div>
+                    <div class="vn">1</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="go-detail">
+            <span>可{php echo $set['texts']['transfer_text'] ?: '转账'}{if $type == 'credit2'}{$_W['shopset']['trade']['moneytext']}：¥{else}{$_W['shopset']['trade']['credittext']}：{/if}<span
+                    id="go-detail">{if $type == 'credit2'}{$currentMember['credit2']}{else}{$currentMember['credit1']}{/if}</span></span>
+        </div>
+
+        <div class="do-smt-wp">
+            <div class="tith">{php echo $set['texts']['transfer_text'] ?: '转账'}{if $type == 'credit2'}{$_W['shopset']['trade']['moneytext']}{else}{$_W['shopset']['trade']['credittext']}{/if}
+            </div>
+            <div class="my-wp">
+                <div class="util">{if $type == 'credit2'}￥{/if}</div>
+                <input type="number" id="ipic" style="border: 0;width: 100%;" type="number" id="money" class="price"
+                       value=""/>
+            </div>
+
+
+            <div class="fee-wp">
+                {if $type == 'credit2'}
+                <span class="l">{php echo $set['texts']['transfer_text'] ?: '转账'}{php echo $set['texts']['transfer_service_text'] ?: '手续费'}：<span
+                        class="service_recharge_price">{$set['service_recharge_price']}{if $set['service_recharge_type'] == 1}%{/if}</span></span>
+
+                <span class="r">实际到账：{if $type == 'credit2'}￥{/if}<span class="finalPrice">0</span></span>
+
+                {/if}
+            </div>
+            <div class="do-wp">
+
+                <div class="pbtnx"><a
+                        href="{php echo mobileurl('transfer_account/sdl', array('type' => $type, 'search' => $search))}">上一步</a>
+                </div>
+                <span id="amds" style="background: #999999;"
+                      class="pbtnx  sp">
+                给他{php echo $set['texts']['transfer_text'] ?: '转账'}
+            </span>
+            </div>
+            <div class="explain">{php echo $set['texts']['transfer_description'] ?: '说明:请详细核对'.$set['texts']['transfer_text'].'信息'}
+            </div>
+        </div>
+
+        <div id="ak" style="display: none">
+            <div class="shadow-wp"></div>
+            <div class="dialog">
+                <div class="alttith">提示</div>
+                <div class="alt">{php echo $set['texts']['transfer_text'] ?: '转账'}后操作不可逆，请确认{php echo $set['texts']['transfer_text'] ?: '转账'}信息！！！</div>
+                <div class="up">
+                    <span class="b">收款人信息</span>
+                </div>
+
+                <div class="info-wp">
+                    <div class="image"
+                         style="background-image:url('{$member['avatar']}')">
+                    </div>
+                    <div>
+                        <div class="name">{$member['nickname']}</div>
+                        <div class="tel">手机号码：{$member['mobile']}</div>
+                    </div>
+                    <div class="uid">
+                        <div>UID：{$member['id']}</div>
+                        <div class="vn">1</div>
+                    </div>
+                </div>
+
+                <div class="dinfo">
+                    <div class="item">
+                        <span class="lb">{php echo $set['texts']['transfer_text'] ?: '转账'}{if $type == 'credit2'}{$_W['shopset']['trade']['moneytext']}{else}{$_W['shopset']['trade']['credittext']}{/if}：</span>
+                        <span class="pic">{if $type == 'credit2'}￥{/if}<span class="transfer_money">0</span></span>
+                    </div>
+                    {if $type == 'credit2'}
+                    <div class="item">
+                        <span class="lb">{php echo $set['texts']['transfer_text'] ?: '转账'}{php echo $set['texts']['transfer_service_text'] ?: '手续费'}({$set['service_recharge_price']}{if $set['service_recharge_type'] == 1}%{/if})：</span>
+                        <span class="pic">-{if $type == 'credit2'}￥{/if}<span class="service_price">0</span></span>
+                    </div>
+                    {/if}
+                </div>
+
+                <div class="dc">
+                    <span class="rc">实际到账：</span>
+                    <span class="pic">{if $type == 'credit2'}￥{/if}<span class="finalPrice">0</span></span>
+                </div>
+
+                <div class="opts-wp">
+                    <span id="cacel" class="aitem" bindtap="doHide">取消</span>
+                    <span id="sd" class="aitem  r ac">确认{php echo $set['texts']['transfer_text'] ?: '转账'}<span
+                            id="sd-child"></span></span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    $("#ipic").bind("input propertychange", function (event) {
+        var service_charge = $('.service_recharge_price').text();
+
+        var value = $("#ipic").val();
+        var finalPrice = 0;
+
+        if (service_charge.indexOf('%') != -1) {
+            // 比例
+            service_charge = service_charge.substr(0, service_charge.length - 1);
+            finalPrice = value - value * service_charge / 100
+
+        } else {
+            // 固定金额
+            finalPrice = value - service_charge;
+        }
+        if (finalPrice < 0) {
+            finalPrice = 0;
+        }
+        $('.finalPrice').html(parseFloat(finalPrice).toFixed(2));
+        $('.transfer_money').html(value);
+        $('.service_price').html((parseFloat(value) - parseFloat(finalPrice)).toFixed(2));
+
+    });
+
+
+    $(function () {
+        var data = {};
+
+        function lock() {
+
+        }
+
+        function unlock() {
+
+        }
+
+        function readTimer(lock, unlock) {
+            var s = 10,
+                obj = $("#sd"),
+                obj_child = $("#sd-child");
+            // 锁住
+            // todo
+            lock();
+            obj_child.text('(' + s-- + 'S)');
+            obj.addClass('dis');
+
+            data.timer = setInterval(function () {
+                obj_child.text('(' + s-- + 'S)');
+                if (-1 === s) {
+                    clearInterval(data.timer);
+                    obj_child.text('');
+                    obj.removeClass("dis");
+                    // 释放锁
+                    // todo
+                    unlock();
+                }
+            }, 1000);
+        }
+
+        // readTimer(lock, unlock)
+
+        // 处理弹出
+        var PUBPIC = $("#go-detail").text();
+
+        // $("#ipic").keydown(function (e) {
+
+        //     if(8 !== e.keyCode){
+        //         e.target.value = (e.target.value.match(/^\d*(\.?\d{0,1})/g)[0]) || null
+        //     }
+        // })
+
+        $("#ipic").keyup(function () {
+            if (!isNaN($(this).val()) && +$(this).val() > 0 && +$(this).val() < +PUBPIC && parseFloat($('.finalPrice').text()) > 0) {
+
+                $("#amds").removeAttr("style");
+            } else {
+                $("#amds").attr("style", "background:#999")
+            }
+        })
+
+        $("#amds").on('touchstart', function () {
+            if (!$(this).attr("style")) {
+                $("#ak").show();
+                readTimer(function () {
+                }, function () {
+                });
+            } else {
+                $("#ak").hide();
+            }
+        })
+
+        // 取消
+        $("#cacel").on('touchstart', function () {
+            $("#ak").hide();
+            $("#sd").removeClass("dis");
+        })
+
+        $("#sd").click(function () {
+            if (!$(this).hasClass("dis")) {
+
+                FoxUI.loader.show('loading', 'icon icon-add');
+                // 提交
+                // $('#shadow-dm').show();
+                $.ajax({
+                    'url': "{php echo mobileurl('transfer_account/transfer')}",
+                    'data': {
+                        'type': '{$type}',
+                        'money': $("#ipic").val(),
+                        'to_userid': {$search}
+                    },
+                    'success': function (res) {
+                        $('#shadow-dm').hide();
+                        if (res.status == -1) {
+
+                        } else {
+                            // 成功 跳转成功页
+                            window.location.href = '{php echo mobileurl('transfer_account/finish', array('type' => $type))}'
+                        }
+                    }
+                })
+
+            }
+        })
+    })
+</script>
+
+{template '_footer'}

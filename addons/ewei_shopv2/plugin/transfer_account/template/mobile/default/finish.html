@@ -1,0 +1,83 @@
+{template '_header'}
+<style>
+.my-status-wp{
+    padding: calc(110rem / 40) calc(24rem / 40) calc(48rem / 40) calc(24rem / 40);
+    text-align: center;
+    background: #FFFFFF;
+    margin-bottom: calc(16rem / 40);
+}
+.my-status-wp .icox{
+    margin-bottom: calc(60rem / 40);
+    display: block;
+}
+.my-status-wp .st{
+    font-size: calc(36rem / 40);
+    line-height: calc(50rem / 40);
+    color: #333333;
+    margin-bottom: calc(64rem / 40);
+}
+.do-wp{
+    display: flex;
+}
+.do-wp .pbtnx{
+    border: 1px solid #E6E7EB;
+    border-radius: calc(8rem / 40);
+    height: calc(78rem / 40);
+    text-align: center;
+    line-height: calc(78rem / 40);
+    flex: 1;
+    margin-right: calc(16rem / 40);
+    color: #FF5555;
+}
+.do-wp .sp{
+    margin: 0;
+    background: #FF5555;
+    color: #FFFFFF;
+}
+.go-detail{
+    padding: calc(20rem / 40) calc(24rem / 40);
+    background: #FFFFFF;
+    color: #212121;
+    font-size: calc(28rem / 40);
+    display: flex;
+    justify-content: space-between;
+}
+.fui-cell,
+.fui-cell-group{
+    margin: 0 !important;
+    padding: 0 !important;
+}    
+</style>
+<div class='fui-page  fui-page-current'>
+    <div class="fui-header" style="position: static;background:#fff;">
+        <div class="fui-header-left">
+            <a class="back"></a>
+        </div>
+        <div class="title">商城</div>
+        <div class="fui-header-right"></div>
+    </div>
+    <div class="my-status-wp">
+        <i class="icox icox-guanbi1" style="background:url('/addons/ewei_shopv2/plugin/transfer_account/static/image/success.png') no-repeat 50% 0;width:calc(144rem / 40);height:calc(140rem / 40);background-size:calc(144rem / 40);margin:0 auto;"></i>
+        <div class="st">{php echo $set['texts']['transfer_text'] ?: '转账'}成功</div>
+
+        <div class="do-wp">
+            <div  class="pbtnx"><a href="{php echo $_GPC['type'] == 'credit2' ? mobileurl('member/log') :  mobileurl('member/credit')}">返回</a></div>
+            <span  class="pbtnx  sp">
+             <a href="{php echo mobileurl('transfer_account/ts', array('type' => $_GPC['type']))}" style="color: #fff">继续{php echo $set['texts']['transfer_text'] ?: '转账'}</a>
+        </span>
+        </div>
+    </div>
+    <a href="{php echo mobileurl('transfer_account/log', array('type' => $_GPC['type']))}">
+<span  class="go-detail">
+    <span>查看{php echo $set['texts']['transfer_text'] ?: '转账'}记录</span>
+    <i class="fui-cell-group">
+        <i class="fui-cell">
+            <i class="fui-cell-remark"></i>
+        </i>
+    </i>
+</span>
+    </a>
+
+</div>
+
+{template '_footer'}

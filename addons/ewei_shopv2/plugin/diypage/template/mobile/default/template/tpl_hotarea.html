@@ -1,0 +1,18 @@
+{if !empty($diyitem['params'])}
+<!--H5热区显示-->
+<div class='fui-swipe'>
+    <div class='fui-swipe-wrapper' style="box-sizing: border-box;padding:{$diyitem['style']['paddingtop']}px {$diyitem['style']['paddingleft']}px;">
+
+        <div class='fui-swipe-item' data-nocache="true" style="position:relative; ">
+        <img src="{php echo tomedia($diyitem['params']['bgimg'])}" style="display: block; width: 100%; height: auto;"/>
+            {loop $diyitem['data'] $hotitem}
+            <a href="{$hotitem['href']}" data-nocache="true" style="display:block;position:absolute;height:{$hotitem['height']};width:{$hotitem['width']};top:{$hotitem['top']};left:{$hotitem['left']};"></a>
+            {/loop}
+        </div>
+    </div>
+    <style>
+        .fui-swipe-page .fui-swipe-bullet {background: {$diyitem['style']['background']}; opacity: {$diyitem['style']['opacity']};}
+        .fui-swipe-page .fui-swipe-bullet.active {opacity: 1;}
+    </style>
+</div>
+{/if}

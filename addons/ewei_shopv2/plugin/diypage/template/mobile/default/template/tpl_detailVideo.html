@@ -1,0 +1,50 @@
+{if !empty($diyitem['params'])}
+{if !empty($diyitem['params']['shortPoster'])}
+
+<video id="Video{$key}"
+       style="object-fit:fill;width:100%;"
+       webkit-playsinline="true"
+       playsinline x5-video-player-type="h5"
+       x5-video-player-fullscreen="true"
+       x5-video-orientation="portraint"
+       src="{php echo tomedia($diyitem['params']['turl'])}"
+       controls
+       poster="{php echo tomedia($diyitem['params']['shortPoster'])}">
+</video>
+{else}
+<video id="Video{$key}"
+       style="object-fit:fill;width: 100%;"
+       class="Video"
+       webkit-playsinline="true"
+       playsinline x5-video-player-type="h5"
+       x5-video-player-fullscreen="true"
+       x5-video-orientation="portraint"
+       src="{php echo tomedia($diyitem['params']['turl'])}"
+       controls
+        poster="">
+</video>
+{/if}
+<script>
+    var width = $(document.body).width();
+    var scale = "{$diyitem['style'][ratio]}";
+    var height = 0,poster;
+    if (scale == 0) {
+        height = width / 16*9;
+        poster = '../addons/ewei_shopv2/static/images/169.png'
+    } else if (scale == 1) {
+        height = width / 4*3;
+        poster = '../addons/ewei_shopv2/static/images/43.png'
+    } else if (scale == 2) {
+        height = width;
+        poster= "../addons/ewei_shopv2/static/images/11.png"
+    }
+    var videoid = "#Video{$key}";
+    $(videoid).height(height).width(width);
+    if($(videoid).hasClass('Video')){
+        $(videoid).attr('poster',poster)
+    }
+</script>
+<script>
+    $('video').eq($('video').length - 1).css('width','100%');
+</script>
+{/if}

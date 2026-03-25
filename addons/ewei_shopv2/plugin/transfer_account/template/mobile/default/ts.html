@@ -1,0 +1,205 @@
+{template '_header'}
+<style>
+    /* pages/member/accounts/index.wxss */
+    .account-wp {
+        background: #FFFFFF;
+        font-size: calc(28rem / 40);
+        line-height: calc(40rem / 40);
+        margin: calc(16rem / 40) 0;
+        padding: calc(48rem / 40) calc(24rem / 40);
+    }
+
+    .account-wp .up {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: calc(16rem / 40);
+    }
+
+    .account-wp .cb {
+        color: #518DEF;
+        font-size: calc(20rem / 40);
+    }
+
+    .search {
+        border: 1px solid #E6E7EB;
+        height: calc(80rem / 40);
+        margin-bottom: calc(32rem / 40);
+        padding-left: calc(22rem / 40);
+    }
+
+    .sp {
+        color: #CCCCCC;
+    }
+
+    .pbtn {
+        background: #FF5555;
+        border-radius: calc(8rem / 40);
+        color: #FFFFFF;
+        height: calc(80rem / 40);
+        text-align: center;
+        line-height: calc(80rem / 40);
+    }
+
+    .b {
+        font-weight: bold;
+    }
+
+    .go-detail {
+        padding: calc(20rem / 40) calc(24rem / 40);
+        background: #FFFFFF;
+        color: #212121;
+        font-size: calc(28rem / 40);
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .fui-cell,
+    .fui-cell-group {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .navigator-hover {
+        opacity: 1;
+    }
+
+    .pbtn {
+        background: #FF5555;
+        border-radius: 8 rpx;
+        color: #FFFFFF;
+        height: 80 rpx;
+        text-align: center;
+        line-height: 80 rpx;
+        display: block;
+    }
+
+
+.shadow{
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: #000;
+    opacity: 0.6;
+    position: absolute;
+}
+#shadow-wp .ct{
+    position: absolute;
+    z-index: 99;
+    padding: 0 calc(64rem / 40);
+    top: 50%;
+    transform: translate(0, -50%);
+    text-align: center;
+}
+#shadow-wp img{
+    margin-bottom: calc(74rem / 40);
+}
+#shadow-wp .ct input{
+    border: 1px solid #E6E7EB;
+    box-sizing: border-box;
+    border-radius: calc(16rem / 40);
+    background: transparent;
+    width: calc(340rem / 40);
+    height: calc(80rem / 40);
+    color: #fff;
+}    
+</style>
+
+<div style="" class='fui-page  fui-page-current member-log-page'>
+    <div class="fui-header" style="position: static;background:#fff;">
+        <div class="fui-header-left">
+            <a class="back"></a>
+        </div>
+        <div class="title">{if $type == 'credit1'}{$_W['shopset']['trade']['credittext']}{else}{$_W['shopset']['trade']['moneytext']}{/if}{php echo $set['texts']['transfer_text'] ?: '转账'}</div>
+        <div class="fui-header-right"></div>
+    </div>
+    <!--pages/member/accounts/index.wxml-->
+    <div>
+        <div class="account-wp">
+            <div class="up">
+                <span class="b">请填写对方的UID</span>
+                <span id="cb" class="cb">如何找到会员UID？</span>
+            </div>
+
+            <input id="txt" style="display: block;width: 100%;" name="search" value="{$search}" class="search"
+                   placeholder="请输入对方UID"/>
+
+            <span id="ibtn" style="background:{php echo $search ? '' : '#666'}"
+                  class="pbtn">下一步
+                </span>
+
+        </div>
+
+        <a href="{php echo mobileurl('transfer_account/log', array('type' => $type))}">
+        <span class="go-detail">
+            <span>查看{php echo $set['texts']['transfer_text'] ?: '转账'}记录</span>
+            <i class="fui-cell-group">
+                <i class="fui-cell">
+                    <i class="fui-cell-remark"></i>
+                </i>
+            </i>
+        </span>
+        </a>
+    </div>
+    <div id="shadow-wp" style="display: none;">
+        <div class="shadow"></div>
+        <div class="ct">
+            <img width="100%"
+                 src="http://dev.v3.getpkg.cn/addons/ewei_shopv2/plugin/transfer_account/static/image/help.png" />
+            <input id="shadow-btn" type="button" value="我知道啦" />
+        </div>
+    </div>
+</div>
+
+
+{template '_footer'}
+
+<script>
+
+    var isjump = false;
+
+    $(function () {
+        var obj = $("#ibtn");
+
+        $("#txt").keyup(function () {
+            if ('' == $(this).val()) {
+
+                obj.attr("style", "background:#666");
+                isjump = false;
+            } else {
+                obj.removeAttr("style")
+                isjump = true;
+            }
+        })
+
+        $("#cb").click(function () {
+            $("#shadow-wp").show();
+        })
+
+        $("#shadow-btn").click(function () {
+            $("#shadow-wp").hide();
+        })
+    })
+    $('.pbtn').click(function () {
+        if (isjump) {
+            var name = $('input[name="search"]').val();
+            FoxUI.loader.show('loading')
+            // 校验用户
+            $.ajax({
+                url: "{php echo mobileurl('transfer_account/getuser')}" + '&uid=' + name + '&type={$type}',
+                dataType: 'json',
+                success: function (res) {
+                    if (res.status == -1) {
+                        FoxUI.loader.hide();
+                        FoxUI.toast.show(res.result.message)
+                    } else {
+                        window.location.href = "{php echo mobileurl('transfer_account/sdl')}" + '&search=' + name + '&type={$type}';
+                    }
+                }
+            })
+
+
+        }
+
+    })
+</script>

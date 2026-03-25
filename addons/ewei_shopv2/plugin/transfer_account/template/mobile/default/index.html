@@ -1,0 +1,71 @@
+转帐
+{template '_header'}
+<link rel="stylesheet" type="text/css" href="../addons/ewei_shopv2/plugin/qa/static/css/common.css?v=2016063000">
+<style>
+    .comm_center{
+        height:100%;
+        overflow: auto;
+        padding: 2.2rem 0 2.45rem;
+    }
+</style>
+<div class='fui-page  fui-page-current'>
+    <div class="fui-header">
+        <div class="fui-header-left">
+            <a class="back"></a>
+        </div>
+        <div class="title">{if $type == 'credit2'}{$set['moneytext']}{else} $set['credittext']{/if}{php echo $set['texts']['transfer_text'] ?: '转账'}</div>
+        <div class="fui-header-right">
+            <a class="icon icon-home external" href="{php echo mobileUrl()}"></a>
+        </div>
+    </div>
+    <div class="fui-content">
+        <h2 style="text-align: center ;margin-top: 30px">请填写对方的uid</h2>
+        <div class="fui-cell-group">
+            <div class="fui-cell must ">
+                <div class="fui-cell-label ">UID</div>
+                <div class="fui-cell-info c000">
+                    <input type="text" class="fui-input" id="uid" name="uid" placeholder="请输入对方uid" value="" autocomplete="">
+                </div>
+            </div>
+            <a href="#" id="btn-submit" class="btn btn-primary block mtop disabled" style="background: lightgray;color: white;border: none ">下一步</a>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(function ()
+    {
+        $(document).on('change','#uid',function ()
+        {
+            let uid = $(this).val();
+            let btnObject = $('#btn-submit');
+
+            if (uid == 0 || uid == '' || uid == undefined)
+            {
+                return false;
+            }
+            $.ajax({
+                url:"{php echo mobileUrl('transfer_account/getuser')}",
+                method:'post',
+                async:false,
+                data:{
+                    uid
+                },
+                dataType:'json',
+                success:function (result)
+                {
+                    btnObject.removeClass('disabled');
+                    btnObject.css('background','')
+                    btnObject.css('border','')
+                    console.log(result)
+                },
+                error:function (error)
+                {
+                    tips.alert('网络连接失败')
+                }
+            })
+        })
+    });
+</script>
+{template '_footer'}
