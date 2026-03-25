@@ -1,0 +1,60 @@
+services:
+  mysql:
+    image: mysql:5.7
+    command:
+      - --character-set-server=utf8
+      - --collation-server=utf8_general_ci
+      - --sql-mode=
+    environment:
+      TZ: ${TZ}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: unless-stopped
+    networks: [ewei_net]
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks: [ewei_net]
+
+  php:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    environment:
+      TZ: ${TZ}
+      PHP_MEMORY_LIMIT: ${PHP_MEMORY_LIMIT}
+      PHP_UPLOAD_MAX_FILESIZE: ${PHP_UPLOAD_MAX_FILESIZE}
+      PHP_POST_MAX_SIZE: ${PHP_POST_MAX_SIZE}
+    volumes:
+      - ../../:/var/www/html:rw
+    restart: unless-stopped
+    networks: [ewei_net]
+
+  nginx:
+    image: nginx:1.25-alpine
+    depends_on:
+      - php
+    ports:
+      - "${HTTP_BIND}:80"
+    volumes:
+      - ../../:/var/www/html:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+    restart: unless-stopped
+    networks: [ewei_net]
+
+volumes:
+  mysql_data:
+  redis_data:
+
+networks:
+  ewei_net:
+    driver: bridge
+
